@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="The personal photography exhibition of Suraj Sunny.">
+  <title>Suraj Sunny — Photography</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#top"><b></b><span id="brandName">Suraj Sunny</span> / Exhibition</a><nav><button class="ghost admin-only" id="editExhibit" hidden>Exhibition details</button><button class="primary admin-only" id="addWork" hidden>＋ Add a work</button></nav></header>
+  <main id="top"><section class="hero"><div><div class="eyebrow" id="subtitle">A personal digital exhibition</div><h1 id="heroTitle">Light, <em>Held Still</em></h1></div><div class="hero-side"><p class="statement" id="statement"></p><div class="meta"><span id="location"></span><span id="workCount"></span></div></div></section>
+    <section class="controls"><div class="filters" id="filters"></div><div class="count" id="shownCount"></div></section>
+    <section class="gallery" id="gallery"><div class="empty">Opening the exhibition…</div></section>
+  </main>
+  <footer class="footer"><div><strong id="footerName">Suraj Sunny</strong><p>Personal digital exhibition · All works reserved</p></div><button class="curator" id="adminButton">Curator sign in</button></footer>
+  <div class="overlay hidden" id="lightbox"><div class="light-image"><img id="lightImg" alt=""></div><aside class="light-info"><button class="close" id="closeLight" aria-label="Close">×</button><div class="light-spacer"></div><div class="kicker" id="lightMeta"></div><h2 id="lightTitle"></h2><p class="story" id="lightStory"></p><div class="light-actions admin-only" hidden><button id="editWork">Edit details</button><button id="deleteWork">Remove work</button></div><div class="pager"><button id="prev">← Previous</button><button id="next">Next →</button></div></aside></div>
+  <div class="drawer hidden" id="drawer"><section class="panel"><div class="panel-head"><h2 id="panelTitle"></h2><button class="x" id="closeDrawer" aria-label="Close">×</button></div><div id="panelBody"></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
