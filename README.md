@@ -1,73 +1,39 @@
 # Suraj Sunny — Personal Digital Exhibition
 
-A responsive photography portfolio built for Cloudflare Workers. The public site has an editorial masonry gallery, collection filters, and a full-screen lightbox. A private admin mode supports photo uploads and exhibition editing.
+A responsive photography portfolio built for Cloudflare Workers, served at **photography.surajsunny.com**. The public site has an editorial masonry gallery, collection filters, and a full-screen lightbox. A private curator mode supports photo uploads and exhibition editing.
 
 ## Cloudflare services
 
-- **Workers Static Assets** serves the frontend and API.
-- **R2** stores photographs privately; the Worker serves them with immutable cache headers.
-- **D1** stores exhibition details and photo metadata.
-- **Worker secret** `ADMIN_PASSWORD` protects editing.
+- **Workers Static Assets** serves the frontend; the Worker serves the API.
+- **R2** (binding `PHOTOS`, bucket `suraj-photography`) stores photographs under `works/` and gallery details in `_meta/gallery.json`. No database is needed.
+- **Custom Domain** `photography.surajsunny.com` is declared in `wrangler.jsonc`.
+- **Secret** `ADMIN_PASSWORD` enables curator sign-in.
 
-## First deployment
+The Worker shows built-in sample works until the first edit is saved.
 
-Install Node.js 18+ and authenticate Wrangler:
+## Deploy from the Cloudflare dashboard (no terminal)
+
+1. **Workers & Pages → Create → Import a repository**, choose `ssunny-social/photography`, keep the defaults, and click **Deploy**.
+2. After it deploys, open the Worker → **Settings → Variables and Secrets → Add**, type **Secret**, name `ADMIN_PASSWORD`, choose a password, and save.
+3. Visit https://photography.surajsunny.com and use **Curator sign in** in the footer.
+
+Every push to `main` redeploys automatically.
+
+If a DNS record for `photography.surajsunny.com` already exists, delete it first so the custom domain can be attached.
+
+## Deploy from a terminal (alternative)
 
 ```bash
 npm install
 npx wrangler login
-```
-
-Create the storage resources:
-
-```bash
-npx wrangler d1 create suraj-photography
-npx wrangler r2 bucket create suraj-photography
-```
-
-Copy the `database_id` printed by the first command into `wrangler.jsonc`, replacing `REPLACE_WITH_D1_DATABASE_ID`.
-
-Initialize the production database and set your admin password:
-
-```bash
-npm run db:remote
+npx wrangler deploy
 npx wrangler secret put ADMIN_PASSWORD
 ```
 
-Deploy:
-
-```bash
-npm run deploy
-```
-
-## Custom domain
-
-In the Cloudflare dashboard, open **Workers & Pages → suraj-photography → Settings → Domains & Routes → Add → Custom Domain**, then enter:
-
-```text
-photography.surajsunny.com
-```
-
-Cloudflare will create and manage the DNS record and certificate. Remove any pre-existing conflicting DNS record first.
-
 ## Local development
 
-Create `.dev.vars` (never commit it):
-
-```text
-ADMIN_PASSWORD=choose-a-local-password
-```
-
-Then run:
-
-```bash
-npm run db:local
-npm run dev
-```
-
-Open the site and choose **Curator sign in** at the bottom. Replace the sample works with your photographs and edit the exhibition details.
+Create `.dev.vars` (never commit it) containing `ADMIN_PASSWORD=choose-a-local-password`, then run `npm run dev`.
 
 ## Security
 
-Never put API tokens or passwords in this repository. The admin session uses a secure, HTTP-only, SameSite cookie signed with `ADMIN_PASSWORD`. Uploaded images are limited to 15 MB and validated by media type.
-Updated
+Never put API tokens or passwords in this repository. Curator sessions use a secure, HTTP-only, SameSite cookie signed with `ADMIN_PASSWORD`; without that secret, editing is disabled. Uploads are limited to 15 MB and to JPEG, PNG, WebP, or AVIF.

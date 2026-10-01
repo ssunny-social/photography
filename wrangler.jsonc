@@ -1,25 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "suraj-photography",
+  "name": "photography",
   "main": "src/index.js",
-  "compatibility_date": "2026-01-01",
+  "compatibility_date": "2025-01-01",
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "suraj-photography",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
-    }
-  ],
+  // One R2 bucket holds both the photographs and the gallery details.
+  // It already exists (created by the first build).
   "r2_buckets": [
-    {
-      "binding": "PHOTOS",
-      "bucket_name": "suraj-photography"
-    }
+    { "binding": "PHOTOS", "bucket_name": "suraj-photography" }
   ],
+  "routes": [
+    { "pattern": "photography.surajsunny.com", "custom_domain": true }
+  ],
+  "workers_dev": true,
   "observability": { "enabled": true }
 }
