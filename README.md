@@ -70,3 +70,4 @@ Open the site and choose **Curator sign in** at the bottom. Replace the sample w
 ## Security
 
 Never put API tokens or passwords in this repository. The admin session uses a secure, HTTP-only, SameSite cookie signed with `ADMIN_PASSWORD`. Uploaded images are limited to 15 MB and validated by media type.
+Updated
